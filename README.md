@@ -11,7 +11,7 @@ Given letters:
 Pass the input to the script like so:
 
 ```
-$ python3 wordup.py -w 5e 4a -l 3n 2is 1nfaiuuatgd
+$ python3 wordup.py -w 5e 4a -l 3n 2is 1nfiuuatgd
  448 - guanidines, tufa
  446 - guanidines, aft
  446 - guanidines, fat
