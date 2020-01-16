@@ -7,7 +7,8 @@ import requests
 
 from collections import Counter
 
-url = 'https://wordfinder.yourdictionary.com/unscramble/{letters}'
+url = 'https://wordfinder.yourdictionary.com/unscramble/'
+uas = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:72.0) Gecko/20100101 Firefox/72.0'
 letter_values = {
     'a':  1, 'b': 4, 'c': 3, 'd': 2, 'e': 1, 'f': 4, 'g': 3, 'h':  3, 'i': 1,
     'j': 10, 'k': 5, 'l': 2, 'm': 4, 'n': 2, 'o': 1, 'p': 3, 'q': 10, 'r': 1,
@@ -16,10 +17,7 @@ letter_values = {
 
 
 def get_words(letters):
-    r = requests.get(
-        url.format(letters=letters),
-        headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:72.0) Gecko/20100101 Firefox/72.0'}
-    )
+    r = requests.get(url + letters, headers={'User-Agent': uas})
     response = r.text
     soup = bs4.BeautifulSoup(r.text, 'html.parser')
     return [href.text for href in soup.findAll('a', {'class': 'has-definition'})]
@@ -41,9 +39,9 @@ def score_word(word, values):
                 if v['wordscore'] > select_value['wordscore']:
                     select_value = v
                     continue
-                if v['wordscore'] == 1:
-                    if v['value'] > select_value['value']:
-                        select_value = v
+                if v['wordscore'] == 1 and v['value'] > select_value['value']:
+                    select_value = v
+                    continue
 
         # pop value
         _values.remove(select_value)
