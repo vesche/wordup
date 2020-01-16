@@ -9,9 +9,9 @@ from collections import Counter
 
 url = 'https://wordfinder.yourdictionary.com/unscramble/{letters}'
 letter_values = {
-    'a': 1, 'b': 4, 'c': 3, 'd': 2, 'e': 1, 'f': 4, 'g': 3, 'h':  3, 'i': 1,
-    'j': 8, 'k': 5, 'l': 2, 'm': 4, 'n': 2, 'o': 1, 'p': 3, 'q': 10, 'r': 1,
-    's': 1, 't': 1, 'u': 2, 'v': 6, 'w': 4, 'x': 8, 'y': 4, 'z': 10
+    'a':  1, 'b': 4, 'c': 3, 'd': 2, 'e': 1, 'f': 4, 'g': 3, 'h':  3, 'i': 1,
+    'j': 10, 'k': 5, 'l': 2, 'm': 4, 'n': 2, 'o': 1, 'p': 3, 'q': 10, 'r': 1,
+    's':  1, 't': 1, 'u': 2, 'v': 6, 'w': 4, 'x': 8, 'y': 4, 'z': 10
 }
 
 
@@ -73,14 +73,15 @@ def main():
                 'value': letter_values[letter] * multiply,
                 'wordscore': 1,
             })
-    for arg in args['w']:
-        wordscore, letters = int(arg[0]), arg[1:]
-        for letter in letters:
-            values.append({
-                'letter': letter,
-                'value': letter_values[letter],
-                'wordscore': wordscore,
-            })
+    if args['w']:
+        for arg in args['w']:
+            wordscore, letters = int(arg[0]), arg[1:]
+            for letter in letters:
+                values.append({
+                    'letter': letter,
+                    'value': letter_values[letter],
+                    'wordscore': wordscore,
+                })
 
     all_letters = ''.join([v['letter'] for v in values])
     wordscore_letters = ''.join([v['letter'] for v in values if v['wordscore'] > 1])
