@@ -7,7 +7,7 @@ import requests
 
 from collections import Counter
 
-url = 'https://wordfinder.yourdictionary.com/unscramble/'
+url = 'https://api.yourdictionary.com/wordfinder/v1/unscrambler?tiles={letters}&offset=0&limit=10&order_by=score&group_by=word_length&dictionary=WWF&bonus=true&dictionary_opt=YDR&check_exact_match=true&exclude_original=true&original_tiles={letters}'
 uas = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:72.0) Gecko/20100101 Firefox/72.0'
 letter_values = {
     'a':  1, 'b': 4, 'c': 3, 'd': 2, 'e': 1, 'f': 4, 'g': 3, 'h':  3, 'i': 1,
@@ -17,10 +17,15 @@ letter_values = {
 
 
 def get_words(letters):
-    r = requests.get(url + letters, headers={'User-Agent': uas})
-    response = r.text
-    soup = bs4.BeautifulSoup(r.text, 'html.parser')
-    return [href.text for href in soup.findAll('a', {'class': 'has-definition'})]
+    r = requests.get(url.format(letters=letters) + letters, headers={'User-Agent': uas})
+    response = r.json()
+
+    words = list()
+    for group in response['data']['_groups']:
+        for item in group['_items']:
+            words.append(item['word'])
+
+    return words
 
 
 def score_word(word, values):
