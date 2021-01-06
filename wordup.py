@@ -98,7 +98,7 @@ def main():
         word_counts = Counter(word)
         if all(word_counts[letter] >= count for letter, count in wordscore_counts.items()):
             top_words.append(word)
-        if len(top_words) == 10: # top 10
+        if len(top_words) == 20: # top 20
             break
 
     scores = [] # [{'first': 'word1', 'second': 'word2', 'score': 0}, ...]
@@ -108,7 +108,7 @@ def main():
         letters_leftover = str(all_letters)
         for c in word:
             letters_leftover = letters_leftover.replace(c, '', 1)
- 
+
         secondary_words = get_words(letters_leftover)[:5] # top 5 (secondary)
         for word2 in secondary_words:
             second_word_score, _ = score_word(word2, new_values)
