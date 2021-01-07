@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-import bs4
 import json
 import argparse
 import requests
